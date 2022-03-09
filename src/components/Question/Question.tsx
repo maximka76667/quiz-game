@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 interface QuestionInterface {
@@ -8,14 +8,21 @@ interface QuestionInterface {
 
 interface QuestionProps {
   question: QuestionInterface;
+  isCorrect: boolean
 }
 
 function Question(props: QuestionProps) {
-  const { question } = props;
+  const { question, isCorrect } = props;
+
+  const [thisQuestion, setThisQuestion] = useState<QuestionInterface>({ q: '', a: '' });
+
+  useEffect(() => {
+    setThisQuestion(question);
+  }, []);
+
   return (
     <div className="question">
-      <p>{question.q}</p>
-      <p>{question.a}</p>
+      <h2 className={`question__q ${isCorrect ? 'question__q_correct' : ''}`}>{thisQuestion.q}</h2>
     </div>
   );
 }
@@ -25,6 +32,7 @@ Question.propType = {
     q: PropTypes.string,
     a: PropTypes.string,
   }).isRequired,
+  isCorrect: PropTypes.bool,
 };
 
 export default Question;
